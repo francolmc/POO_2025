@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 class Product():
     def __init__(self, id: str, name: str, price: float) -> None:
@@ -57,3 +58,81 @@ class Customer():
 
     def get_rut(self) -> str:
         return self.__rut
+
+class Item():
+    def __init__(self) -> None:
+        self.product: Product = None
+        self.__quantity: int = 0
+
+    def set_quantity(self, quantity: int) -> None:
+        if quantity > 0:
+            self.__quantity = quantity
+        else:
+            raise ValueError("Invalid quantity. Quantity must be positive.")
+        
+    def get_quantity(self) -> int:
+        return self.__quantity
+
+    def total(self) -> float:
+        return self.product.price * self.__quantity
+    
+class ShoppingCart():
+    def __init__(self, id: int, customer: Customer) -> None:
+        self.shopping_cart_id: int = id
+        self.customer: Customer = customer
+        self.__creation_date: datetime = datetime.now()
+        self.__items: list[Item] = []
+
+    def remove_item(self, product_id: str, quantity: int) -> None:
+        # Buscar el item en la lista
+        item_found: Item = None
+        for item in self.__items:
+            if item.product.product_id == product_id:
+                if item.get_quantity() == quantity:
+                    item_found = item
+
+        if item_found is None:
+            raise ValueError("Product not found in cart with the specified quantity")
+        
+        # Remover el item de la lista
+        self.__items.remove(item_found)
+        # TODO: Retonar la cantidad de productos removidos al stock del producto
+        item_found.product.set_stock(quantity)
+
+    def total_price(self) -> float:
+        pass
+
+    def add_item(self, product: Product, quantity: int) -> None:
+        pass
+
+    def clear_cart(self) -> None:
+        pass
+
+    def get_items(self) -> list[Item]:
+        pass
+
+    def pay_shopping_cart(self) -> None:
+        pass
+
+
+# Desarrollar una aplicacion que permita registrar varios clientes en una lista.
+# que se pueda buscar port RUT y mostrar sus datos
+# modificar o eliminar un cliente de la lista.
+# Para hacer mas sencillo el trabajo, se puede mostrar un menu con las opciones
+
+def main() -> None:
+    name = input("Ingrese su nombre:")
+    email = input("Ingrese su email:")
+    phone = input("Ingrese su teléfono (+569XXXXXXXX):")
+    rut = input("Ingrese su RUT:")
+    address = input("Ingrese su dirección:")
+
+    customer = Customer()
+
+    customer.name = name
+    customer.email = email
+    customer.set_phone(phone)
+    customer.set_rut(rut)
+    customer.address = address
+
+main()
