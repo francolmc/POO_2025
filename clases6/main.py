@@ -121,18 +121,41 @@ class ShoppingCart():
 # Para hacer mas sencillo el trabajo, se puede mostrar un menu con las opciones
 
 def main() -> None:
-    name = input("Ingrese su nombre:")
-    email = input("Ingrese su email:")
-    phone = input("Ingrese su teléfono (+569XXXXXXXX):")
-    rut = input("Ingrese su RUT:")
-    address = input("Ingrese su dirección:")
+    customer_list: list[Customer] = []
+    while True:
+        print ("MENU DE OPCIONES")
+        print ("1. Agregar cliente")
+        print ("2. Buscar cliente por RUT")
+        print ("3. Modificar cliente por RUT")
+        print ("4. Eliminar cliente por RUT")
+        print ("5. Mostrar todos los clientes")
+        print ("6. Salir")
 
-    customer = Customer()
+        option = input ("Seleccione una opción: ")
+        if option == "1":
+            print ("Agregar cliente")
+            customer = Customer()
+            customer.name = input ("Ingrese nombre del cliente: ")
+            customer.email = input ("Ingrese email del cliente: ")
+            customer.set_phone(input ("Ingrese teléfono del cliente (+569XXXXXXXX): "))
+            customer.set_rut(input ("Ingrese RUT del cliente: "))
+            customer.address = input ("Ingrese dirección del cliente: ")
+            customer_list.append(customer)
+        elif option == "2":
+            print ("Buscar cliente por RUT")
+        elif option == "3":
+            print ("Modificar cliente por RUT")
+        elif option == "4":
+            print ("Eliminar cliente por RUT")
+        elif option == "5":
+            print ("Mostrar todos los clientes")
+            for customer in customer_list:
+                print (f"Nombre: {customer.name}, Email: {customer.email}, Teléfono: {customer.get_phone()}, RUT: {customer.get_rut()}, Dirección: {customer.address}") 
+        elif option == "6":
+            print ("Salir")
+            break
+        else:
+            print ("Opción inválida, intente nuevamente")
 
-    customer.name = name
-    customer.email = email
-    customer.set_phone(phone)
-    customer.set_rut(rut)
-    customer.address = address
-
+        
 main()
