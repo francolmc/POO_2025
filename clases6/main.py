@@ -67,6 +67,8 @@ class Item():
     def set_quantity(self, quantity: int) -> None:
         if quantity > 0:
             self.__quantity = quantity
+            if not self.product.check_stock(quantity):
+                raise ValueError("Insufficient stock for the requested quantity")
         else:
             raise ValueError("Invalid quantity. Quantity must be positive.")
         
@@ -100,26 +102,64 @@ class ShoppingCart():
         item_found.product.set_stock(quantity)
 
     def total_price(self) -> float:
-        pass
+        total: float = 0.0
+        for item in self.__items:
+            total = total + item.total()
+        return total
 
     def add_item(self, product: Product, quantity: int) -> None:
-        pass
+        new_item = Item()
+        new_item.product = product
+        try:
+            new_item.set_quantity(quantity)
+        except ValueError as e:
+            raise ValueError("Cannot add item to cart: " + str(e))
+        self.__items.append(new_item)
+
 
     def clear_cart(self) -> None:
-        pass
+        self.__items.clear()
 
     def get_items(self) -> list[Item]:
-        pass
+        return self.__items
 
     def pay_shopping_cart(self) -> None:
         pass
+
+# Probar las clases
+
+arroz = Product("1", "Arroz 1K", 1500)
+arroz.set_stock(10)
+
+tallarin = Product("2", "Tallarin 1K", 1200)
+tallarin.set_stock(5)
+
+pan_pascua = Product("3", "Pan de Pascua", 3000)
+pan_pascua.set_stock(2)
+
+pedro = Customer()
+pedro.name = "Pedro Perez"
+pedro.email = "pedrito@sucorreo.com"
+pedro.set_phone("+56912345678")
+pedro.set_rut("12.345.678-9")
+pedro.address = "Calle Falsa 123"
+
+# Proceso de compra
+carro = ShoppingCart(1, pedro)
+carro.add_item(arroz, 2)
+print(carro.total_price())
+carro.clear_cart()
+print(carro.get_items())
+carro.add_item(pan_pascua, 5)
+print(carro.total_price())
+
 
 
 # Desarrollar una aplicacion que permita registrar varios clientes en una lista.
 # que se pueda buscar port RUT y mostrar sus datos
 # modificar o eliminar un cliente de la lista.
 # Para hacer mas sencillo el trabajo, se puede mostrar un menu con las opciones
-
+"""
 def main() -> None:
     customer_list: list[Customer] = []
     while True:
@@ -159,3 +199,5 @@ def main() -> None:
 
         
 main()
+"""
+
