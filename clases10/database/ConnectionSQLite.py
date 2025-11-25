@@ -4,11 +4,12 @@ import sqlite3
 
 # Crear clase connectionSQLite que herede de Connection
 class ConnectionSQLite(Connection):
-    def __init__(self):
+    def __init__(self, host: str = ""):
         self.connection = None
+        self.__host = host
 
-    def connect(self, host: str, port: int = 0, user: str = "", password: str = ""):
-        self.connection = sqlite3.connect(host)
+    def connect(self, host: str = "", port: int = 0, user: str = "", password: str = ""):
+        self.connection = sqlite3.connect(self.__host)
 
     def close_connection(self):
         self.connection.close()

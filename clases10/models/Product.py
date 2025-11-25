@@ -41,3 +41,5 @@ class Product:
             raise ValueError("La cantidad no puede ser negativa")
         self.__quantity = value
         
+    def __str__(self) -> str:
+        return f"Product(name={self.__name})"
